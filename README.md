@@ -1,51 +1,5 @@
-# RGMII Toolkit
-## Software deployment Toolkit for Quectel RM5xxx series 5G modems utilizing an m.2 to RJ45 adapter (RGMII)
-
-Current Branch: **Main**
-
-Please Fork and PR with/to [Development](https://github.com/iamromulan/quectel-rgmii-toolkit/tree/development) instead of main, it has the latest changes and is meant to be commits ahead of main for testing. :)
-
-"Don't push to production 😂"
-
-Fork development, and PR development to development :)
-
-
-
-
-#### [JUMP TO HOW TO USE](#how-to-use)
-**Currently:** This will allow you to install or if already installed, update, remove, or modify:
- - Simple Admin: A simple web interface for managing your Quectel m.2 modem through it's gateway address
-	 - It will install socat-at-bridge: sets up ttyOUT and ttyOUT2 for AT commands. You'll be able to use the `atcmd` command as well for an interactive at command session from adb, ssh, or ttyd
-	 - It will install simplefirewall: A simple firewall that blocks definable incoming ports and a TTL mangle option/modifier. As of now only the TTL is controllable through Simple Admin. You can edit port block options and TTL from the 3rd option in the toolkit
- - Tailscale: A magic VPN for accessing Simple Admin, SSH, and ttyd on the go. The Toolkit installs the Tailscale client directly to the modem and allows you to login and configure other settings. Head over to tailscale.com to sign up for a free account and learn more.
- - Schedule a Daily Reboot at a specified time
- - A fix for certain modems that don't start in CFUN=1 mode
- - Entware/OPKG: A package installer/manager/repo
-	- Run `opkg help` to see how to use it
-	- These packages are installable: https://bin.entware.net/armv7sf-k3.2/Packages.html
- - TTYd: A shell session right from your browser
-	 - Currently this uses port 443 but SSL/TLS is not in use (http only for now)
-	 - Entware/OPKG is required so it will install it if it isn't installed
-	 - This will replace the stock Quectel login and passwd binaries with ones from entware
-
-  
-
-**My goal** is for this to also include any new useful scripts or software for this modem and others that support RGMII mode.
-## Screenshots
-
-![Toolkit](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulantoolkit.png?raw=true)
-![Home Page](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulansimpleindex.png?raw=true)
-![AT Commands](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulanatcommands.png?raw=true)
-
-![AT Commands](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulansimplenetwork.png?raw=true)
-![TTL](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulansimpleTTL.png?raw=true)
-
-![TTL](https://github.com/iamromulan/quectel-rgmii-configuration-notes/blob/main/images/iamromulanspeedtest.png?raw=true)
-
-
-
-## How to Use
-**To run the Toolkit:**
+## 这东西咋用呢
+**为了能正常运行控制台:**
  - Open ADB & Fastboot++ covered in [Using ADB](https://github.com/iamromulan/quectel-rgmii-configuration-notes?tab=readme-ov-file#unlocking-and-using-adb) or just use adb
  - Make sure your modem is connected by USB to your computer
  - Run `adb devices` to make sure your modem is detected by adb
@@ -53,7 +7,7 @@ Fork development, and PR development to development :)
  - If you don't get an error you should be getting replies back endlessly, press `CTRL-C` to stop it.
  - Simply Copy/Paste this into your Command Prompt/Shell 
 ```bash
-adb shell "cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/main/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
+adb shell "cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/BIGEGGEGG/quectel-rgmii-toolkit/main/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
 ```
 
 **Or, if you want to stay in the modems shell when you are done**
@@ -63,7 +17,7 @@ adb shell
 ```
 Then run
 ```
-cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/iamromulan/quectel-rgmii-toolkit/main/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh && cd /
+cd /tmp && wget -O RMxxx_rgmii_toolkit.sh https://raw.githubusercontent.com/BIGEGGEGG/quectel-rgmii-toolkit/main/RMxxx_rgmii_toolkit.sh && chmod +x RMxxx_rgmii_toolkit.sh && ./RMxxx_rgmii_toolkit.sh" && cd /
 ```
 **You should see:**
 
