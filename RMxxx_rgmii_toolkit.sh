@@ -909,8 +909,7 @@ install_ttyd() {
 while true; do
 
     echo -e "\e[92m"
-    echo "Welcome to BIGEGGEGG's RGMII Toolkit script for Quectel RMxxx Series modems!"
-    echo "欢迎使用移远模块web控制台安装程序"
+    echo "欢迎使用卤蛋瞎鼓捣出来的移远模块web控制台安装程序"
     echo -e "\e[0m"
     echo "选择一个操作:"
     echo -e "\e[0m"
