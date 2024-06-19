@@ -432,7 +432,7 @@ install_simple_admin() {
 		sleep 1
                 systemctl start simpleadmin_httpd
                 remount_ro
-                echo -e "\e[1;32msimpleadmin has been installed and is now ready for use!\e[0m"
+                echo -e "\e[1;32mweb控制台组件已安装完成并处于运行状态!\e[0m"
                 break
                 ;;
             2)
@@ -942,7 +942,7 @@ while true; do
                     *) echo -e "\e[1;31mInvalid option\e[0m";;
                 esac
             else
-                echo -e "\e[1;32mInstalling Simple Admin...\e[0m"
+                echo -e "\e[1;32m准备安装web控制台及相关组件...\e[0m"
                 install_simple_admin
             fi
             ;;
