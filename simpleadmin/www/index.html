@@ -69,7 +69,7 @@
                   <!-- added APN -->
                   <!--<p class="title" x-text="csqData.APN"></p>
                   <p class="subtitle">当前APN</p>-->
-                  <p class="title" x-text="csqData.COPS"></p>
+                  <p class="title" x-text="csqData.operator"></p>
                   <p class="subtitle">当前运营商</p>
                   <p
                     class="title"
@@ -135,10 +135,12 @@
                           <th>Signal Strength</th>
                           <td x-text="csqData.CSQ_PER"></td>
                         </tr>
-                        <tr>-->
+                        <tr>
                           <th>RSSI</th>
                           <td x-text="csqData.CSQ_RSSI"></td>
-                        </tr>
+                        </tr>-->
+                          <th>APM</th>
+                          <td x-text="csqData.APN"></td>
                         <tr>
                           <th>RSRQ</th>
                           <td x-html="csqData.ECIO"></td>

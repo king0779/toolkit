@@ -344,7 +344,7 @@
               ></textarea>
 
               <div style="margin-top: 1.5rem">
-                <p>检查频段锁定状态</p>
+                <p>解除频段锁定状态</p>
                 <div class="select is-info" style="margin-top: 0.5rem">
                   <select id="lockedBands" x-model="lockedBands">
                     <option>请选择网络制式</option>
@@ -360,12 +360,12 @@
                   @click="showLockedBands()"
                   :disabled="isLoading"
                 >
-                  检查频段
+                  解锁频段
                 </button>
               </div>
 
               <div style="margin-top: 1rem">
-                <p>检查小区锁定状态</p>
+                <p>解除小区锁定状态</p>
                 <div class="select is-info" style="margin-top: 0.5rem">
                   <select id="cellState" x-model="cellState">
                     <option>请选择网络制式</option>
@@ -380,7 +380,7 @@
                   @click="showCellState()"
                   :disabled="isLoading"
                 >
-                  检查小区
+                  解锁小区
                 </button>
               </div>
 
@@ -639,6 +639,10 @@
             const apnCmd = `AT+CGDCONT=1,"IPV4V6","${this.apnInput}"`;
             this.sendAtCommand(apnCmd);
           },
+          setIMEI() {
+            const imeiCmd = `AT+EGMR=1,7,"${this.imeiinput}"`;
+            this.sendAtCommand(imeiCmd);
+          },
           setPrefNetwork() {
             // AT+QNWPREFCFG="mode_pref",<mode>
             let prefCmd;
@@ -758,7 +762,7 @@
                 console.log("Enable Success.");
                 // Show a temporary loading query message
                 this.queryCommandResponse =
-                  "Enabling NSA cell scan. Please wait...";
+                  "NSA网络扫描中，请稍等...";
                 this.queryATCommand(queryScanCmd);
               })
               .catch((error) => {
@@ -771,7 +775,7 @@
             const scanCmd = "AT+QSCAN=3,1";
             // Show a temporary loading query message
             this.queryCommandResponse =
-              "Full network scan initiated. This takes about a minute. Please wait...";
+              "全网扫描中，请稍等...";
             this.queryATCommand(scanCmd);
           },
           queryATCommand(atcmd) {

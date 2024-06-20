@@ -78,7 +78,7 @@ MODEM_MODEL=$(</tmp/modemmodel.txt)
 # Get the model name from the modem model (they either start with RG or RM)
 MODEM_MODEL=$(echo "$MODEM_MODEL" | grep -o "RG[^ ]\+\|RM[^ ]\+")
 
-MODEM_MODEL=$(</tmp/modemversion.txt)
+MODEM_VERSION=$(</tmp/modemversion.txt)
 # Get the model version from the modem model (they either start with RG or RM)
 MODEM_VERSION=$(echo "$MODEM_VERSION" | grep -o "RG[^ ]\+\|RM[^ ]\+")
 
@@ -89,10 +89,6 @@ MODEM_IMEI=$(echo "$MODEM_IMEI" | grep -o "8[^ ]\+")
 MODEM_ICCID=$(</tmp/modemiccid.txt)
 # Get the model version from the modem model (they either start with RG or RM)
 MODEM_ICCID=$(echo "$MODEM_ICCID" | grep -o "8[^ ]\+")
-
-COPS=$(</tmp/cops.txt)
-# Get the cops (they either start with RG or RM)
-COPS=$(echo "$COPS"| grep -o "46[^ ]\+")
 
 # Get the APN from /tmp/apn.txt and parse it
 APN=$(grep "^+CGCONTRDP" /tmp/apn.txt | awk -F',' '{gsub(/"/, "", $3); print $3}')
@@ -135,6 +131,26 @@ MCCMNC=$(echo $QSPN | cut -d, -f5 | tr -d '"')
 PROVIDER=$(echo $QSPN | cut -d, -f1 | tr -d '"')
 PROVIDER_ID=$(echo $QSPN | cut -d, -f5 | tr -d '"')
 CSQ=$(echo $OX | grep -o "+CSQ: [0-9]\{1,2\}" | grep -o "[0-9]\{1,2\}")
+
+case "$MCCMNC" in
+            "46000" | "46002" | "46007" | "46008" | "46020")
+                operator="中国移动"
+                ;;
+            "46001" | "46006" | "46009")
+                operator="中国联通"
+                ;;
+            "46003" | "46005" | "46011")
+                operator="中国电信"
+                ;;
+            "46015")
+                operator="中国广电"
+                ;;
+            *)
+                operator="未知运营商"
+                ;;
+esac
+operator="$operator"
+
 if [ "$CSQ" = "99" ]; then
 	CSQ=""
 fi
@@ -536,6 +552,10 @@ MODEZ=$(echo $MODE | tr -d '"')
 	echo 'SC_BANDS="'"$SC_BANDS"'"'
 	echo 'APN="'"$APN"'"'
 	echo 'MODEM_MODEL="'"$MODEM_MODEL"'"'
+	echo 'MODEM_VERSION="'"$MODEM_VERSION"'"'
+	echo 'MODEM_IMEI="'"$MODEM_IMEI"'"'
+	echo 'MODEM_ICCID="'"$MODEM_ICCID"'"'
+	echo 'COPS="'"$COPS"'"'
 	echo 'SIMSLOT="'"$SIMSLOT"'"'
 	echo 'PCI="'"$PCI"'"'
 	echo 'TEMP="'"$CTEMP"'"'
@@ -551,6 +571,7 @@ MODEZ=$(echo $MODE | tr -d '"')
 	echo 'CID_NUM="'""'"'
 	echo 'RNC="'"$RNC"'"'
 	echo 'RNC_NUM="'""'"'
+	echo 'operator="'"$operator"'"'
 }  > /tmp/signal.txt
 
 # Pregenerate JSON File
