@@ -84,15 +84,15 @@ MODEM_VERSION=$(echo "$MODEM_VERSION" | grep -o "RG[^ ]\+\|RM[^ ]\+")
 
 MODEM_IMEI=$(</tmp/modemimei.txt)
 # Get the model version from the modem model (they either start with RG or RM)
-MODEM_IMEI=$(echo "$MODEM_IMEI")
+MODEM_IMEI=$(echo "$MODEM_IMEI" | grep -o "8[^ ]\+")
 
 MODEM_ICCID=$(</tmp/modemiccid.txt)
 # Get the model version from the modem model (they either start with RG or RM)
-MODEM_ICCID=$(echo "$MODEM_ICCID")
+MODEM_ICCID=$(echo "$MODEM_ICCID" | grep -o "8[^ ]\+")
 
 COPS=$(</tmp/cops.txt)
 # Get the cops (they either start with RG or RM)
-COPS=$(echo "$COPS")
+COPS=$(echo "$COPS"| grep -o "46[^ ]\+")
 
 # Get the APN from /tmp/apn.txt and parse it
 APN=$(grep "^+CGCONTRDP" /tmp/apn.txt | awk -F',' '{gsub(/"/, "", $3); print $3}')

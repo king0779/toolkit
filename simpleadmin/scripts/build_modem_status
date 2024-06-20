@@ -10,14 +10,14 @@ while true; do
     sleep 2
 
     # Run AT+EGMR to get the modem imei
-    echo -en "AT+EGMR=0,7\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemversion.txt
+    echo -en "AT+EGMR=0,7\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemimei.txt
     sleep 2
 
     # Run AT+GMR to get the modem iccid
-    echo -en "AT+ICCID\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemversion.txt
+    echo -en "AT+ICCID\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemiccid.txt
     sleep 2
 
-    # Run AT+COPS to get the cops
+    # Run AT+COPS？ to get the cops
     echo -en "AT+COPS?\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/cops.txt
     sleep 2
 
