@@ -44,7 +44,7 @@
         >
           <div class="navbar-start">
             <a class="navbar-item" href="/bandlock.html"> 网络设置 </a>
-            <a class="navbar-item" href="/atcommander.html"> AT指令 </a>
+            <a class="navbar-item" href="/atcommander.html"> AT调试 </a>
             <!--<a class="navbar-item" href="/"> 连接信息 </a>
             <a class="navbar-item" href="/ttl.html"> TTL修改器 </a>
             <a class="navbar-item" href="/speedtest.html"> Speedtest测速 </a>-->
@@ -64,13 +64,13 @@
         <div class="column is-8-tablet is-6-desktop card-column">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">Band Locking</p>
+              <p class="card-header-title">频段锁定</p>
             </header>
             <div class="card-content">
               <!-- Create a drop down -->
               <div class="select is-primary">
                 <select id="networkMode" x-model="networkMode">
-                  <option>Select Network Mode</option>
+                  <option>请选择网络制式</option>
                   <option>LTE</option>
                   <option>NR5G-NSA</option>
                   <option>NR5G-SA</option>
@@ -79,7 +79,7 @@
               <input
                 class="input is-primary"
                 type="text"
-                placeholder="Example: 1,3,41"
+                placeholder="例如: 41"
                 style="margin-top: 1rem"
                 x-model="bandNumbers"
               />
@@ -90,7 +90,7 @@
                   @click="lockBands()"
                   :disabled="isLocking"
                 >
-                  Lock Bands
+                  锁定频段
                 </button>
 
                 <button
@@ -99,15 +99,13 @@
                   @click="restoreBands()"
                   :disabled="isLocking"
                 >
-                  Restore Bands
+                  重置频段
                 </button>
               </div>
             </div>
             <div class="card-footer" style="padding: 0.25rem">
               <p class="card-footer-item">
-                Please first select your desired network band from the dropdown
-                menu. To lock onto specific bands, please type the band numbers
-                separated by commas (,) and then click the lock button.
+                请先在下拉菜单中选择网络制式，然后在文本框中输入要指定的频段号。
               </p>
             </div>
           </div>
@@ -116,36 +114,36 @@
         <div class="column is-8-tablet is-6-desktop card-column">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">LTE and NR5G Cell Locking</p>
+              <p class="card-header-title">小区锁定</p>
             </header>
             <div class="card-content">
               <div style="display: flex; flex-direction: row">
                 <div class="select is-info">
                   <select id="networkModeSelect" x-model="networkMode2">
-                    <option>Select Network Mode</option>
+                    <option>请选择网络制式</option>
                     <option>LTE</option>
                     <option>NR5G-SA</option>
                   </select>
                 </div>
 
-                <div
-                  id="numFreqContainer"
-                  style="margin-left: 1rem"
-                  x-show="networkMode2 == 'LTE'"
-                >
+              <div style="margin-left: 1rem" x-show="networkMode2 == 'LTE'">
+                <div style="display: flex; flex-direction: row">
                   <input
                     class="input is-info"
-                    type="number"
-                    id="numFreqInput"
-                    min="1"
-                    max="10"
-                    placeholder="1-10"
-                    x-model="cellNum"
+                    type="text"
+                    placeholder="EARFCN"
+                    x-model="earfcn1"
+                  />
+                  <input
+                    class="input is-info"
+                    type="text"
+                    placeholder="PCI"
+                    x-model="pci1"
+                    style="margin-left: 1rem"
                   />
                 </div>
               </div>
-
-              <div id="freqNumbersContainer"></div>
+           </div>
 
               <!-- For NR5G-SA -->
               <div style="margin-top: 1rem" x-show="networkMode2 == 'NR5G-SA'">
@@ -186,7 +184,7 @@
                   @click="cellLock()"
                   :disabled="isLocking"
                 >
-                  Lock Cell
+                  锁定小区
                 </button>
 
                 <button
@@ -195,17 +193,17 @@
                   @click="restoreCell()"
                   :disabled="isLocking"
                 >
-                  Restore Cell
+                  重置小区
                 </button>
               </div>
             </div>
             <div class="card-footer" style="padding: 0.25rem">
               <p class="card-footer-item">
-                To utilize cell locking, first, select the network mode, then
-                specify the number of cells you wish to lock onto (max 10) if
-                you are using LTE. Next, input the EARFCN and PCI values for
-                each cell number. If you are locking through NR5G-SA instead,
-                simply fill up all the required parameters.
+                若要锁定小区，请先选择网络制式，然后填入所需参数。<br />
+                NR5G中的SCS填写规则为：
+                1|2|3|5|7|8|12|20|25|28|66|71|75|76 频段请填写 15<br />
+                38|40|41|48|77|78|79 频段请填写 30  -----
+                257|258|260|261 频段请填写 120
               </p>
             </div>
           </div>
@@ -216,12 +214,12 @@
         <div class="column is-8-tablet is-6-desktop card-column">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">Network Utilities</p>
+              <p class="card-header-title">网络单元</p>
             </header>
             <div class="card-content">
               <div style="display: flex; flex-direction: column">
                 <div>
-                  <p>Set Network APN</p>
+                  <p>设置接入APN</p>
                   <div
                     style="
                       display: flex;
@@ -241,21 +239,21 @@
                       @click="setAPN()"
                       :disabled="isLoading"
                     >
-                      Set APN
+                      设置APN
                     </button>
                   </div>
                 </div>
               </div>
 
               <div style="margin-top: 1rem">
-                <p>Set Preferred Network Mode</p>
+                <p>设置首选网络制式</p>
                 <div
                   style="display: flex; flex-direction: row; margin-top: 0.5rem"
                 >
                   <div class="select is-info">
                     <select id="prefNetworkMode" x-model="prefNetworkMode">
-                      <option>Select Network</option>
-                      <option>AUTO</option>
+                      <option>选择网络制式</option>
+                      <option>自动</option>
                       <option>WCDMA</option>
                       <option>LTE ONLY</option>
                       <option>NR5G-NSA</option>
@@ -269,19 +267,19 @@
                     @click="setPrefNetwork()"
                     :disabled="isLoading"
                   >
-                    Set Network
+                    设置网络
                   </button>
                 </div>
               </div>
 
               <div style="margin-top: 1rem">
-                <p>Set Sim Slot</p>
+                <p>设置Sim卡槽</p>
                 <div
                   style="display: flex; flex-direction: row; margin-top: 0.5rem"
                 >
                   <div class="select is-info">
                     <select id="simSlot" x-model="simSlot">
-                      <option>Select Sim</option>
+                      <option>选择卡槽</option>
                       <option>1</option>
                       <option>2</option>
                     </select>
@@ -293,22 +291,22 @@
                     @click="setSimSlot()"
                     :disabled="isLoading"
                   >
-                    Set Sim
+                    设置卡槽
                   </button>
                 </div>
               </div>
 
               <div style="margin-top: 1rem">
-                <p>NR5G Mode Control</p>
+                <p>NR5G模式控制</p>
                 <div
                   style="display: flex; flex-direction: row; margin-top: 0.5rem"
                 >
                   <div class="select is-info">
                     <select id="nrMode" x-model="nrMode">
-                      <option>Select NR5G Mode</option>
-                      <option>Enable All</option>
-                      <option>Disable NSA</option>
-                      <option>Disable SA</option>
+                      <option>选择NR5G模式</option>
+                      <option>开启SA&NSA</option>
+                      <option>关闭NSA</option>
+                      <option>关闭SA</option>
                     </select>
                   </div>
 
@@ -318,17 +316,14 @@
                     @click="nr5GMode()"
                     :disabled="isLoading"
                   >
-                    Set Mode
+                    设置模式
                   </button>
                 </div>
               </div>
             </div>
             <div class="card-footer" style="padding: 0.25rem">
               <p class="card-footer-item">
-                This section allows you to set the APN, preferred network mode,
-                and sim slot. Simply input the desired values and click the
-                respective buttons to apply the changes. (Sim slot is only
-                applicable for dual sim devices.)
+                此处设置允许您更改APN、网络制式、Sim卡槽等信息。卡槽切换仅支持双卡模组。
               </p>
             </div>
           </div>
@@ -338,21 +333,21 @@
         <div class="column is-8-tablet is-6-desktop card-column">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">Query Network Parameters</p>
+              <p class="card-header-title">网络参数查询</p>
             </header>
             <div class="card-content">
               <textarea
                 class="textarea"
                 rows="5"
-                placeholder="Query Response"
+                placeholder="指令响应"
                 x-text=" isLoading ? 'Getting Response...' : queryCommandResponse"
               ></textarea>
 
               <div style="margin-top: 1.5rem">
-                <p>Check Locked Bands</p>
+                <p>检查频段锁定状态</p>
                 <div class="select is-info" style="margin-top: 0.5rem">
                   <select id="lockedBands" x-model="lockedBands">
-                    <option>Locked Bands</option>
+                    <option>请选择网络制式</option>
                     <option>LTE</option>
                     <option>NSA</option>
                     <option>SA</option>
@@ -365,15 +360,15 @@
                   @click="showLockedBands()"
                   :disabled="isLoading"
                 >
-                  Check Bands
+                  检查频段
                 </button>
               </div>
 
               <div style="margin-top: 1rem">
-                <p>Check Cell Lock</p>
+                <p>检查小区锁定状态</p>
                 <div class="select is-info" style="margin-top: 0.5rem">
                   <select id="cellState" x-model="cellState">
-                    <option>Cell Lock</option>
+                    <option>请选择网络制式</option>
                     <option>LTE</option>
                     <option>NR5G-SA</option>
                   </select>
@@ -385,12 +380,12 @@
                   @click="showCellState()"
                   :disabled="isLoading"
                 >
-                  Check Cell
+                  检查小区
                 </button>
               </div>
 
               <div style="margin-top: 2rem">
-                <p>Other Network Query</p>
+                <p>其他网络参数</p>
               </div>
               <div class="buttons" style="margin-top: 0.5rem">
                 <button
@@ -398,7 +393,7 @@
                   @click="showSupportedBands()"
                   :disabled="isLoading"
                 >
-                  Show Supported Bands
+                  检查模块支持的频段
                 </button>
 
                 <button
@@ -406,7 +401,7 @@
                   @click="showCurrentSim()"
                   :disabled="isLoading"
                 >
-                  Show Current Sim
+                  检查当前卡槽
                 </button>
 
                 <button
@@ -414,23 +409,23 @@
                   @click="showPrefNetwork()"
                   :disabled="isLoading"
                 >
-                  Show Pref Network
+                  检查首选网络制式
                 </button>
 
-                <button
+                <!--<button
                   class="button is-link"
                   @click="showCaInfo()"
                   :disabled="isLoading"
                 >
                   Carrier Aggregation Info
-                </button>
+                </button>-->
 
                 <button
                   class="button is-link"
                   @click="servingCellInfo()"
                   :disabled="isLoading"
                 >
-                  Serving Cell Info
+                  检查服务小区信息
                 </button>
 
                 <button
@@ -438,7 +433,7 @@
                   @click="scanNeighbourCells()"
                   :disabled="isLoading"
                 >
-                  Scan Neighbour Cells
+                  扫描邻居小区
                 </button>
 
                 <button
@@ -446,7 +441,7 @@
                   @click="scanNsaCells()"
                   :disabled="isLoading"
                 >
-                  Scan NSA Cells
+                  扫描NSA小区
                 </button>
 
                 <button
@@ -454,14 +449,13 @@
                   @click="fullNetworkScan()"
                   :disabled="isLoading"
                 >
-                  Full Network Scan
+                  全网络扫描
                 </button>
               </div>
             </div>
             <div class="card-footer" style="padding: 0.25rem">
               <p class="card-footer-item">
-                This section allows you to query the network parameters. Simply
-                click the respective buttons to view the network parameters.
+                此部分通过原始AT检查信息，非必要请勿使用。
               </p>
             </div>
           </div>
@@ -513,7 +507,7 @@
           networkMode: null,
           networkMode2: null,
           bandNumbers: null,
-          cellNum: null,
+          cellNum: 1,
           earfcn1: null,
           pci1: null,
           earfcn2: null,
@@ -853,10 +847,12 @@
         const maxFields = Math.min(num, 10); // Limit to a maximum of 10 fields
         for (let i = 1; i <= maxFields; i++) {
           html += `
-        <div style="margin-top: 1rem" x-show="cellNum >= ${i} && networkMode2 == 'LTE'">
+                
+        <div style="margin-top: 1rem" x-show="cellNum >= 1 && networkMode2 == 'LTE'">
+                <input class="input is-info" type="text" placeholder="EARFCN" x-model="earfcn1" />
+                <input class="input is-info" type="text" placeholder="PCI" x-model="pci1" style="margin-left: 1rem" />
             <div style="display: flex; flex-direction: row">
-                <input class="input is-info" type="text" placeholder="EARFCN" x-model="earfcn${i}" />
-                <input class="input is-info" type="text" placeholder="PCI" x-model="pci${i}" style="margin-left: 1rem" />
+                
             </div>
         </div>
       `;

@@ -78,6 +78,22 @@ MODEM_MODEL=$(</tmp/modemmodel.txt)
 # Get the model name from the modem model (they either start with RG or RM)
 MODEM_MODEL=$(echo "$MODEM_MODEL" | grep -o "RG[^ ]\+\|RM[^ ]\+")
 
+MODEM_MODEL=$(</tmp/modemversion.txt)
+# Get the model version from the modem model (they either start with RG or RM)
+MODEM_VERSION=$(echo "$MODEM_VERSION" | grep -o "RG[^ ]\+\|RM[^ ]\+")
+
+MODEM_IMEI=$(</tmp/modemimei.txt)
+# Get the model version from the modem model (they either start with RG or RM)
+MODEM_IMEI=$(echo "$MODEM_IMEI")
+
+MODEM_ICCID=$(</tmp/modemiccid.txt)
+# Get the model version from the modem model (they either start with RG or RM)
+MODEM_ICCID=$(echo "$MODEM_ICCID")
+
+COPS=$(</tmp/cops.txt)
+# Get the cops (they either start with RG or RM)
+COPS=$(echo "$COPS")
+
 # Get the APN from /tmp/apn.txt and parse it
 APN=$(grep "^+CGCONTRDP" /tmp/apn.txt | awk -F',' '{gsub(/"/, "", $3); print $3}')
 
@@ -261,14 +277,15 @@ case $RAT in
 					LBAND=$LBAND"<br />No NR5G Band Detected"
 					CHANNEL=$CHANNEL", -"
 				fi
-				RSCP=$RSCP" dBm<br />"$(echo $QENG5 | cut -d, -f5)
+				RSCP=$RSCP" dBm<br />"$(echo $QENG5 | cut -d, -f5)" dBm"
 				SINRR=$(echo $QENG5 | cut -d, -f6 | grep -o "[0-9]\{1,3\}")
 				if [ -n "$SINRR" ]; then
 					if [ $SINRR -le 30 ]; then
 						SINR=$SINR"<br />"$((($(echo $SINRR) * 2) -20))" dB"
 					fi
 				fi
-				ECIO=$ECIO" (4G) dB<br />"$(echo $QENG5 | cut -d, -f7)" (5G) "
+				ECIO=$ECIO" (4G) dB<br />"$(echo $QENG5 | cut -d, -f7)" (5G) "" dBm".
+
 			fi
 		fi
 		if [ -z "$LBAND" ]; then
@@ -332,8 +349,8 @@ case $RAT in
 			BW=$(echo $QENG5 | cut -d, -f12)
 			nr_bw
 			LBAND="n"$LBAND" (Bandwidth $BW MHz)"
-			RSCP=$(echo $QENG5 | cut -d, -f13)
-			ECIO=$(echo $QENG5 | cut -d, -f14)
+			RSCP=$(echo $QENG5 | cut -d, -f13)" dBm"
+			ECIO=$(echo $QENG5 | cut -d, -f14)" dBm"
 			if [ "$CSQ_PER" = "-" ]; then
                 BW_N=($BW * 5)
                 RSSI=$(rspr2rssi)

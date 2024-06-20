@@ -35,7 +35,7 @@
         >
           <div class="navbar-start">
             <a class="navbar-item" href="/bandlock.html"> 网络设置 </a>
-            <a class="navbar-item" href="/atcommander.html"> AT指令 </a>
+            <a class="navbar-item" href="/atcommander.html"> AT调试 </a>
             <!--<a class="navbar-item" href="/"> 连接信息 </a>
             <a class="navbar-item" href="/ttl.html"> TTL修改器 </a>
             <a class="navbar-item" href="/speedtest.html"> Speedtest测速 </a>-->
@@ -51,17 +51,17 @@
             <div class="column is-4">
               <div class="card">
                 <header class="card-header">
-                  <p class="card-header-title">AT Command</p>
+                  <p class="card-header-title">发送AT指令</p>
                 </header>
                 <div class="card-content">
                   <div class="content">
                     <div class="field">
-                      <label class="label">AT Command</label>
+                      <label class="label">请在文本框中填入AT指令</label>
                       <div class="control">
                         <input
                           class="input"
                           type="text"
-                          placeholder="ATI"
+                          placeholder="例如：ATI"
                           x-model="atcmd"
                           x-ref="atCmdInput"
                           @keydown.enter="sendAtCommand()"
@@ -75,7 +75,7 @@
                           @click="sendAtCommand()"
                           :disabled="isLoading"
                         >
-                          Send AT Command
+                          发送AT指令
                         </button>
 
                         <button
@@ -83,7 +83,7 @@
                           @click="clearResponses()"
                           :disabled="atCommandResponse === ''"
                         >
-                          Clear
+                          清除
                         </button>
                       </p>
                     </div>
@@ -94,15 +94,15 @@
             <div class="column is-8">
               <div class="card">
                 <header class="card-header">
-                  <p class="card-header-title">AT Command Response</p>
+                  <p class="card-header-title">AT指令响应</p>
                 </header>
                 <div class="card-content">
                   <div class="content">
                     <textarea
                       class="textarea"
-                      placeholder="Multiple commands should be separated by a semicolon. Example: AT+CGMR;+GSN"
+                      placeholder="多行指令将以 ；分隔，例如: AT+CGMR;+GSN"
                       rows="10"
-                      x-text="isLoading ? 'Fetching response, please wait...' : atCommandResponse"
+                      x-text="isLoading ? '正在获取响应...' : atCommandResponse"
                     ></textarea>
                   </div>
                 </div>
@@ -119,7 +119,7 @@
         <div class="column is-12">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">Useful One Click Commands</p>
+              <p class="card-header-title">快速指令</p>
             </header>
             <div class="card-content">
               <div class="content">
@@ -131,7 +131,7 @@
                         @click="sendRebootCommand()"
                         :disabled="isRebooting"
                       >
-                        Reboot
+                        重启模块
                       </button>
                     </div>
                   </div>
@@ -143,116 +143,43 @@
                         @click="sendRebootCommand()"
                         :disabled="isRebooting"
                       >
-                        Reboot
+                        重启模块
                       </button>
                     </div>
                   </div> -->
                 </div>
-               <p>Here are some useful commands:</p>
+               <p>部分可能用到的AT指令:</p>
                 <ul>
                   <li>
                     <!-- Open to another tab -->
-                    See <a href="https://github.com/iamromulan/RM520N-GL#at-commands" target="_blank" style="cursor: pointer;">https://github.com/iamromulan/RM520N-GL#at-commands</a> for
-                    more
-                  </li>
-                  <li>AT+CFUN=1,1 (reboot)</li>
-                  <li>
-                    AT+QMAPWAC? (get current status of auto connect, 0=disabled
-                    1=enabled)
+                    更多指令请查阅AT手册
                   </li>
                   <li>
-                    AT+QMAPWAC=1 (enable auto connect internet for ethernet)
+                    AT+QMAPWAC? (查询当前是否开启自动拨号)
                   </li>
                   <li>
-                    AT+QMAPWAC=0 (disable auto connect for ethernet; use when
-                    you want internet over usb to work; IPPT must be disabled)
+                    AT+QMAPWAC=1 (启用自动拨号)
                   </li>
                   <li>
-                    AT+QUIMSLOT? (get active sim slot; 1=Slot 1; 2=Slot 2)
+                    AT+QMAPWAC=0 (关闭自动拨号)
                   </li>
-                  <li>AT+QUIMSLOT=1 (switch to sim slot 1)</li>
-                  <li>AT+QUIMSLOT=2 (switch to sim slot 2)</li>
-                  <li>AT+CGDCONT? (Get active APN profle list 1 through 8)</li>
+                  <li>AT+GSN (显示当前IMEI)</li>
+                  <li>AT+EGMR=1,7,"此处填入IMEI" (修改 IMEI)</li>
+                  <li>AT+QCAINFO (显示所有已连接的信息)</li>
                   <li>
-                    AT+CGDCONT=1,"IPV4V6","APNHERE" (Sets APN profle 1 to
-                    APNHERE using both IPV4 and IPV6)
-                  </li>
-                  <li>AT+GSN (Show current IMEI)</li>
-                  <li>AT+EGMR=1,7,"IMEIGOESHERE" (sets/repairs IMEI)</li>
-                  <li>AT+QCAINFO (Show all connected bands/CA info)</li>
-                  <li>
-                    AT+QNWPREFCFG="mode_pref" (Check what the current network
-                    search mode is set to)
+                    AT+QMAP="WWAN" (显示当前网络分配信息)
                   </li>
                   <li>
-                    AT+QNWPREFCFG="mode_pref",AUTO (Set network search mode to
-                    automatic)
+                    AT+QMAP="LANIP" (显示当前VLAN0的DHCP分配设置)
                   </li>
                   <li>
-                    AT+QNWPREFCFG="mode_pref",NR5G:LTE (Set network search mode
-                    to 5G/NR and 4G/LTE only)
+                    AT+QMAP="LANIP",起始IP,结束IP,网关IP (设置VLAN0的DHCP分配地址)
                   </li>
                   <li>
-                    AT+QNWPREFCFG="mode_pref",NR5G (Set network search mode to
-                    5G/NR only)
+                    AT+QMAP="MPDN_rule",0,1,0,1,1,"FF:FF:FF:FF:FF:FF" (开启IP直通)
                   </li>
                   <li>
-                    AT+QNWPREFCFG="mode_pref",LTE (Set network search mode to
-                    4G/LTE only)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="nr5g_disable_mode" (Check to see if SA or NSA
-                    NR5G is disabled)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="nr5g_disable_mode",0 (Enable Both SA and NSA
-                    5G/NR)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="nr5g_disable_mode",1 (Disable SA 5G/NR only)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="nr5g_disable_mode",2 (Disable NSA 5G/NR only)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="nr5g_band" (Get current 5G/NR bandlock
-                    settings)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="nr5g_band",1:2:3:4:5:6 (Example: Lock to
-                    5G/NR bands n1,n2,n3,n4,n5, and n6)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="lte_band" (Get current 4G/LTE bandlock
-                    settings)
-                  </li>
-                  <li>
-                    AT+QNWPREFCFG="lte_band",1:2:3:4:5:6 (Example: Lock to
-                    4G/LTE bands 1,2,3,4,5, and 6)
-                  </li>
-                  <li>
-                    AT+QMAP="WWAN" (Show currently assigned IPv4 and IPv6 from
-                    the provider)
-                  </li>
-                  <li>
-                    AT+QMAP="LANIP" (Show current DHCP range and Gateway address
-                    for VLAN0)
-                  </li>
-                  <li>
-                    AT+QMAP="LANIP",IP_start_range,IP_end_range,Gateway_IP (Set
-                    IPv4 Start/End range and Gateway IP of DHCP for VLAN0)
-                  </li>
-                  <li>
-                    AT+QMAP="DHCPV4DNS","disable" (disable the onboard DNS
-                    proxy; recommended for IPPT)
-                  </li>
-                  <li>
-                    AT+QMAP="MPDN_rule",0,1,0,1,1,"FF:FF:FF:FF:FF:FF" (Turn on
-                    IP Passthrough for Ethernet)
-                  </li>
-                  <li>
-                    AT+QMAP="MPDN_rule",0 (turn off IPPT/clear MPDN rule 0;
-                    Remember to run AT+QMAPWAC=1 and reboot after)
+                    AT+QMAP="MPDN_rule",0 关闭IP直通，请在关闭后发送AT+QMAPWAC=1并重启模块)
                   </li>
                 </ul>
               </div>

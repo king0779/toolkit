@@ -13,7 +13,7 @@
       margin-bottom: 1rem;
     }
     .navbar-item.brand-text {
-      font-weight: 700;
+      font-weight: bolder;
     }
     .navbar-item, .navbar-link {
       font-size: 14px;

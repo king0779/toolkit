@@ -5,6 +5,22 @@ while true; do
     echo -en "AT+CGMM\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemmodel.txt
     sleep 2
 
+    # Run AT+GMR to get the modem version
+    echo -en "AT+GMR\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemversion.txt
+    sleep 2
+
+    # Run AT+EGMR to get the modem imei
+    echo -en "AT+EGMR=0,7\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemversion.txt
+    sleep 2
+
+    # Run AT+GMR to get the modem iccid
+    echo -en "AT+ICCID\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/modemversion.txt
+    sleep 2
+
+    # Run AT+COPS to get the cops
+    echo -en "AT+COPS?\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/cops.txt
+    sleep 2
+
     #  Run AT+CGCONTRDP once then proceed to while loop
     echo -en "AT+CGCONTRDP=1\r\n" | microcom -t 1000 /dev/ttyOUT > /tmp/apn.txt
     sleep 2
